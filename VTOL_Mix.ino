@@ -34,9 +34,7 @@ int throttlerightout;
 int tiltservoout;
 
 
-void setup() {
-
-  Serial.begin(115200);
+void setup () {
   
   ch1.begin(true);
   ch2.begin(true);
@@ -51,7 +49,7 @@ void setup() {
 }
 
 
-void loop() {
+void loop () {
 
   ////////// Read Inputs //////////
   aileronIN = ch2.getValue() - 1500; // 1500 is the mid point
@@ -62,7 +60,7 @@ void loop() {
   if (ch1.getValue() > 1000 && ch1.getValue() < 2000) {
     throttleIN = ch1.getValue() - 1500;
   } else {
-    throttleIN = - 500;
+    throttleIN = -500;
   }
    
   ////////// Transition fades //////////
@@ -78,7 +76,6 @@ void loop() {
   elevatorFADE = elevatorIN * (1 - ((tiltIN + 500) * 0.001));
 
   ////////// Mixing //////////
-
   throttleleft = throttleIN + (aileronFADE * 0.2) - (rudderFADE * 0.2) + 1500;
   throttleright = throttleIN - (aileronFADE * 0.2) + (rudderFADE * 0.2) + 1500;
   tiltservo = - tiltIN - elevatorFADE + 1500;
@@ -89,7 +86,6 @@ void loop() {
   tiltservo = constrain(tiltservo, 1100, 1900);
 
   //////////  Outputs //////////
-    
   throttleleftoutput.writeMicroseconds(throttleleft);
   throttlerightoutput.writeMicroseconds(throttleright);
   tiltservooutput.writeMicroseconds(tiltservo);
